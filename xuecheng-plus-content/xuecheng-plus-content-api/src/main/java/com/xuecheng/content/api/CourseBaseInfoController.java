@@ -2,6 +2,8 @@ package com.xuecheng.content.api;
 
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
+import com.xuecheng.content.model.dto.AddCourseDto;
+import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseInfoService;
@@ -19,11 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @version JDK 8
  * @className CourseBaseInfoController
  * @date 2024/3/21 19:45
- * @description 内容管理模块
+ * @description 课程管理模块
  */
 
 @RestController
-@Api(value = "内容管理接口", tags = "内容管理接口")
+@Api(value = "课程管理接口", tags = "课程管理接口")
 public class CourseBaseInfoController {
 
     @Autowired
@@ -33,6 +35,12 @@ public class CourseBaseInfoController {
     @PostMapping("/course/list")
     public PageResult<CourseBase> getall(PageParams pageParams, @RequestBody QueryCourseParamsDto queryCourseParamsDto) {
         return courseBaseInfoService.queryCourseBaseList(pageParams, queryCourseParamsDto);
+    }
+
+    @ApiOperation("新增课程接口")
+    @PostMapping("/course")
+    public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto addCourseDto) {
+        return courseBaseInfoService.createCourseBase(123L,addCourseDto);
     }
 
 }

@@ -2,9 +2,10 @@ package com.xuecheng.content.service;
 
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
+import com.xuecheng.content.model.dto.AddCourseDto;
+import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
-import org.springframework.stereotype.Service;
 
 /**
  * packageName com.xuecheng.content.service
@@ -28,4 +29,13 @@ public interface CourseBaseInfoService {
      */
     PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
 
+    /***
+     * @description 新增课程接口
+     * @param companyId  企业用户id
+     * @param addCourseDto 新增课程内容
+     * @return CourseBaseInfoDto 响应基础信息&营销信息
+     * @author Q
+     * @date 2024/3/22 19:28
+     */
+    CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto addCourseDto);
 }
