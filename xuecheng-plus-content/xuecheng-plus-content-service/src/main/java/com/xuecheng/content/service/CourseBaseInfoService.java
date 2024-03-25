@@ -4,6 +4,7 @@ import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.content.model.dto.AddCourseDto;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
+import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 
@@ -27,7 +28,7 @@ public interface CourseBaseInfoService {
      * @author Q
      * @date 2024/3/22 13:18
      */
-    PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
+    public PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
 
     /***
      * @description 新增课程接口
@@ -37,5 +38,25 @@ public interface CourseBaseInfoService {
      * @author Q
      * @date 2024/3/22 19:28
      */
-    CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto addCourseDto);
+    public CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto addCourseDto);
+
+    /***
+     * @description 根据课程id查询课程基本信息，包括基本信息和营销信息
+     * @param courseId 课程id
+     * @return CourseBaseInfoDto 课程基本信息和营销信息
+     * @author Q
+     * @date 2024/3/25 16:09
+     */
+    public CourseBaseInfoDto getCourseBaseInfo(Long courseId);
+
+
+    /***
+     * @description 修改课程
+     * @param companyId 组织id
+     * @param dto 修改信息
+     * @return CourseBaseInfoDto
+     * @author Q
+     * @date 2024/3/25 16:10
+    */
+    public CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto dto);
 }
