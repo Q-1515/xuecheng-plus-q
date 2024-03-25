@@ -3,6 +3,7 @@ package com.xuecheng.content.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.xuecheng.content.model.dto.TeachplanDto;
 import com.xuecheng.content.model.po.Teachplan;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -15,13 +16,11 @@ import java.util.List;
  */
 public interface TeachplanMapper extends BaseMapper<Teachplan> {
 
-    /***
-     * @description 查询某课程的课程计划，组成树型结构
+    /**
+     * 查询某课程的课程计划，组成树型结构
      * @param courseId 课程id
-     * @return List<TeachplanDto>
-     * @author Q
-     * @date 2024/3/25 17:38
-    */
+     * @return
+     */
     public List<TeachplanDto> selectTreeNodes(long courseId);
 
 }

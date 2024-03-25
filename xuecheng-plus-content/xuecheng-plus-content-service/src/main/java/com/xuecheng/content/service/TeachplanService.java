@@ -1,43 +1,42 @@
 package com.xuecheng.content.service;
 
+
 import com.xuecheng.content.model.dto.SaveTeachplanDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
 
 import java.util.List;
 
 /**
- * packageName com.xuecheng.content.service
+ * 课程计划 业务层
  *
- * @author Q
- * @version JDK 8
- * @className TeachplanService
- * @date 2024/3/25 18:18
- * @description 课程基本信息管理业务接口
+ * @author QLJ
+ * @date 2023-2-27 0027 17:23
  */
 public interface TeachplanService {
 
-    /***
-     * @description 查询课程计划树型结构
+    /**
+     * 查询课程树形列表
      * @param courseId 课程id
-     * @return List<TeachplanDto>
-     * @author Q
-     * @date 2024/3/25 18:13
+     * @return 课程计划
      */
-    public List<TeachplanDto> findTeachplayTree(long courseId);
+    public List<TeachplanDto> findTeachplayTree(Long courseId);
 
-    /***
-     * @description 保存课程计划(新增 / 修改)
-     * @param teachplanDto 课程计划信息
-     * @author Q
-     * @date 2024/3/25 18:59
+    /**
+     * 课程计划创建或修改
+     * @param saveTeachplanDto 课程计划创建修改实体
      */
-    public void saveTeachplan(SaveTeachplanDto teachplanDto);
+    public void teachplanService(SaveTeachplanDto saveTeachplanDto);
 
-    /***
-     * @description 删除课程计划
+    /**
+     * 删除课程计划
      * @param teachPlanId 课程计划id
-     * @author Q
-     * @date 2024/3/25 19:59
      */
     void removeTeachPlan(Long teachPlanId);
+
+    /**
+     * 移动课程计划
+     * @param moveType 移动类型
+     * @param teachPlanId 课程计划id
+     */
+    void moveTeachPlan(String moveType, Long teachPlanId);
 }

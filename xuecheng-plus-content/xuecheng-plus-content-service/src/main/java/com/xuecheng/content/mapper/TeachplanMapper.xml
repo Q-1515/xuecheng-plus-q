@@ -22,7 +22,6 @@
         <result column="change_date" property="changeDate" />
     </resultMap>
 
-
     <resultMap id="selectTreeNodesMap" type="TeachplanDto">
         <id column="id" property="id"/>
         <result column="pname"         property="pname" />
@@ -42,10 +41,16 @@
             <id column="teachplan_media_id" property="id"/>
             <result column="media_id" property="mediaId"/>
             <result column="media_fileName" property="mediaFilename"/>
-            <result column="id" property="teachplanId"/>
-            <result column="course_id" property="courseId"/>
+            <result column="teachplan_media_teachplan_id" property="teachplanId"/>
+            <result column="teachplan_media_course_id" property="courseId"/>
         </association>
     </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, pname, parentid, grade, media_type, start_time, end_time, description, timelength, orderby, course_id, course_pub_id, status, is_preview, create_date, change_date
+    </sql>
+
 
     <select id="selectTreeNodes" parameterType="long" resultMap="selectTreeNodesMap">
         WITH recursive r AS (
@@ -68,9 +73,11 @@
                  r.is_preview,
                  tm.media_id,
                  tm.media_fileName,
-                 tm.id AS teachplan_media_id
+                 tm.id AS teachplan_media_id,
+                 tm.teachplan_id as teachplan_media_teachplan_id,
+                 tm.course_id as teachplan_media_course_id
         FROM r  LEFT JOIN teachplan_media tm ON r.id = tm.teachplan_id WHERE r.course_id = #{courseId}
-        ORDER BY r.id
+        ORDER BY r.orderby
     </select>
 
 </mapper>

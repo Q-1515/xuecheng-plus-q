@@ -15,12 +15,10 @@ import java.util.List;
  */
 public interface CourseCategoryMapper extends BaseMapper<CourseCategory> {
 
-    /***
-     * @description 课程分类树形查询
+    /**
+     * 查询课程分类
      * @param id 根节点id
-     * @return List<CourseCategoryTreeDto>
-     * @author Q
-     * @date 2024/3/22 15:50
+     * @return 课程分类
      */
     List<CourseCategoryTreeDto> selectTreeNodes(String id);
 

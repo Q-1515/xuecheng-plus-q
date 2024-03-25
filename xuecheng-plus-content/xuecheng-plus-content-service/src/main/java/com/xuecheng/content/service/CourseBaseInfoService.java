@@ -7,56 +7,54 @@ import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.EditCourseDto;
 import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
+import org.springframework.stereotype.Service;
 
 /**
- * packageName com.xuecheng.content.service
+ * 课程管理 业务层接口
  *
- * @author Q
- * @version JDK 8
- * @className CourseBaseInfoService
- * @date 2024/3/22 13:13
- * @description 课程基本信息管理业务接口
+ * @author QLJ
+ * @date 2023-2-17 0017 20:57
  */
-
 public interface CourseBaseInfoService {
 
-    /***
+    /**
      * @description 课程查询接口
      * @param pageParams 分页参数
-     * @param queryCourseParamsDto 查询条件
-     * @return PageResult<CourseBase>
-     * @author Q
-     * @date 2024/3/22 13:18
+     * @param queryCourseParamsDto 条件条件
+     * @return com.xuecheng.base.model.PageResult<com.xuecheng.content.model.po.CourseBase>
+     * @author Mr.M
+     * @date 2022/9/6 21:44
      */
-    public PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
+    PageResult<CourseBase> queryCourseBaseList(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
 
-    /***
-     * @description 新增课程接口
-     * @param companyId  企业用户id
-     * @param addCourseDto 新增课程内容
-     * @return CourseBaseInfoDto 响应基础信息&营销信息
-     * @author Q
-     * @date 2024/3/22 19:28
+
+    /**
+     * @description 添加课程基本信息
+     * @param companyId  教学机构id
+     * @param addCourseDto  课程基本信息
+     * @return com.xuecheng.content.model.dto.CourseBaseInfoDto
+     * @author QLJ
+     * @date 2023-2-21
      */
-    public CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto addCourseDto);
+    CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto addCourseDto);
 
-    /***
-     * @description 根据课程id查询课程基本信息，包括基本信息和营销信息
+
+    /**
+     * 根据课程id查询课程基本和营销信息
      * @param courseId 课程id
-     * @return CourseBaseInfoDto 课程基本信息和营销信息
-     * @author Q
-     * @date 2024/3/25 16:09
+     * @return 课程基本和营销信息
      */
-    public CourseBaseInfoDto getCourseBaseInfo(Long courseId);
+    CourseBaseInfoDto getCourseBase(Long courseId);
 
 
-    /***
-     * @description 修改课程
-     * @param companyId 组织id
-     * @param dto 修改信息
-     * @return CourseBaseInfoDto
-     * @author Q
-     * @date 2024/3/25 16:10
-    */
-    public CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto dto);
+    /**
+     * @description 修改课程信息
+     * @param companyId  机构id
+     * @param dto  课程信息
+     * @return com.xuecheng.content.model.dto.CourseBaseInfoDto
+     * @author Mr.M
+     * @date 2022/9/8 21:04
+     */
+    CourseBaseInfoDto updateCourseBase(Long companyId, EditCourseDto dto);
+
 }
