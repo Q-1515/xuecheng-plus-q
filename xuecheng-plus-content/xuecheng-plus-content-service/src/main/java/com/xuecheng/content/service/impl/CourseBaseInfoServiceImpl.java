@@ -93,34 +93,6 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
     @Transactional
     @Override
     public CourseBaseInfoDto createCourseBase(Long companyId, AddCourseDto addCourseDto) {
-        //合法性校验
-        if (StringUtils.isBlank(addCourseDto.getName())) {
-            XueChengPlusException.cast("课程名称为空");
-        }
-
-        if (StringUtils.isBlank(addCourseDto.getMt())) {
-            throw new RuntimeException("课程分类为空");
-        }
-
-        if (StringUtils.isBlank(addCourseDto.getSt())) {
-            throw new RuntimeException("课程分类为空");
-        }
-
-        if (StringUtils.isBlank(addCourseDto.getGrade())) {
-            throw new RuntimeException("课程等级为空");
-        }
-
-        if (StringUtils.isBlank(addCourseDto.getTeachmode())) {
-            throw new RuntimeException("教育模式为空");
-        }
-
-        if (StringUtils.isBlank(addCourseDto.getUsers())) {
-            throw new RuntimeException("适应人群为空");
-        }
-
-        if (StringUtils.isBlank(addCourseDto.getCharge())) {
-            throw new RuntimeException("收费规则为空");
-        }
         //价格收费校验
         if (addCourseDto.getCharge().equals("201001")){
             Float price = addCourseDto.getPrice();
