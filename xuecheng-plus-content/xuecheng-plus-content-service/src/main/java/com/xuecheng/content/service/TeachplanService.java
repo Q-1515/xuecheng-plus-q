@@ -26,12 +26,18 @@ public interface TeachplanService {
     public List<TeachplanDto> findTeachplayTree(long courseId);
 
     /***
-     * @description 保存课程计划(新增/修改)
+     * @description 保存课程计划(新增 / 修改)
      * @param teachplanDto 课程计划信息
      * @author Q
      * @date 2024/3/25 18:59
-    */
+     */
     public void saveTeachplan(SaveTeachplanDto teachplanDto);
 
-
+    /***
+     * @description 删除课程计划
+     * @param teachPlanId 课程计划id
+     * @author Q
+     * @date 2024/3/25 19:59
+     */
+    void removeTeachPlan(Long teachPlanId);
 }
