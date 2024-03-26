@@ -29,8 +29,8 @@ import java.util.List;
  * @author QLJ
  * @date 2023-2-27 0027 17:25
  */
-@Service
 @Slf4j
+@Service
 public class TeachplanServiceImpl implements TeachplanService {
 
     @Autowired
