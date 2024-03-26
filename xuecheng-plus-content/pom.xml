@@ -7,7 +7,7 @@
         <groupId>com.xuecheng</groupId>
         <artifactId>xuecheng-plus-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../xuecheng-plus-parent/pom.xml</relativePath>
+        <relativePath>../xuecheng-plus-parent</relativePath>
     </parent>
 
     <artifactId>xuecheng-plus-content</artifactId>

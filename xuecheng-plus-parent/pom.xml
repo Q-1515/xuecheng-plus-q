@@ -3,18 +3,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>com.xuecheng</groupId>
     <artifactId>xuecheng-plus-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>xuecheng-plus-parent</name>
-    <description>xuecheng-plus-parent</description>
-    <modules>
-        <module>../xuecheng-plus-base</module>
-        <module>../xuecheng-plus-content</module>
-    </modules>
     <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>../xuecheng-plus-content</module>
+        <module>../xuecheng-plus-base</module>
+        <module>../xuecheng-plus-system</module>
 
-    <!--固定版本-->
+    </modules>
+
+    <!-- 继承Spring boot工程 -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.8.RELEASE</version>
+    </parent>
+
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,6 +46,7 @@
         <knife4j-spring-ui.version>3.0.2</knife4j-spring-ui.version>
         <elasticsearch.version>7.12.1</elasticsearch.version>
     </properties>
+
 
     <dependencyManagement>
         <dependencies>
@@ -177,6 +185,12 @@
                 <groupId>com.spring4all</groupId>
                 <artifactId>swagger-spring-boot-starter</artifactId>
                 <version>${swagger-spring-boot-starter.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>io.springfox</groupId>
+                        <artifactId>springfox-swagger-ui</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
@@ -262,4 +276,7 @@
             </plugin>
         </plugins>
     </build>
+
+
+
 </project>
