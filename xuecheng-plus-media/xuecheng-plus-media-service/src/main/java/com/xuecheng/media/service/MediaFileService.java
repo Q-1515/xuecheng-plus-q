@@ -2,6 +2,7 @@ package com.xuecheng.media.service;
 
 import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
+import com.xuecheng.base.model.RestResponse;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
@@ -54,4 +55,48 @@ public interface MediaFileService {
  public MediaFiles saveMediaDb(Long companyId, String fileId, UploadFileParamsDto uploadFileParamsDto, String bucket, String objectName);
 
 
+ /***
+  * @description 检查文件是否存在
+  * @param fileMd5 文件的md5
+  * @return RestResponse<Boolean>
+  * @author Q
+  * @date 2024/3/27 18:12
+ */
+ public RestResponse<Boolean> checkFile(String fileMd5);
+
+
+ /***
+  * @description 检查分块是否存在
+  * @param fileMd5 文件的md5
+  * @param chunkIndex 分块序号
+  * @return RestResponse<Boolean>
+  * @author Q
+  * @date 2024/3/27 18:13
+ */
+ public RestResponse<Boolean> checkChunk(String fileMd5, int chunkIndex);
+
+
+/***
+ * @description 上传分块
+ * @param fileMd5 文件的md5
+ * @param chunk 分块序号
+ * @param bytes 文件字节
+ * @return RestResponse
+ * @author Q
+ * @date 2024/3/27 18:51
+*/
+ public RestResponse<Boolean> uploadChunk(String fileMd5, int chunk, byte[] bytes);
+
+
+ /***
+  * @description 合并分块
+  * @param companyId  机构id
+  * @param fileMd5 文件md5
+  * @param chunkTotal 分块总和
+  * @param uploadFileParamsDto 文件信息
+  * @return RestResponse
+  * @author Q
+  * @date 2024/3/27 19:28
+ */
+ public RestResponse mergechunks(Long companyId, String fileMd5, int chunkTotal, UploadFileParamsDto uploadFileParamsDto);
 }
