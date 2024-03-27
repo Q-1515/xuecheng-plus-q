@@ -33,9 +33,8 @@ public class MediaFilesController {
  @ApiOperation("媒资列表查询接口")
  @PostMapping("/files")
  public PageResult<MediaFiles> list(PageParams pageParams, @RequestBody QueryMediaParamsDto queryMediaParamsDto){
-  Long companyId = 1232141425L;
+  Long companyId = 22L;
   return mediaFileService.queryMediaFiels(companyId,pageParams,queryMediaParamsDto);
-
  }
 
     @ApiOperation("上传文件接口")
@@ -44,7 +43,7 @@ public class MediaFilesController {
                                       @RequestParam(value = "folder", required = false) String folder,
                                       @RequestParam(value = "objectName", required = false) String objectName) {
 
-        Long companyId = 1232141425L;
+        Long companyId = 22L;
         UploadFileParamsDto uploadFileParamsDto = new UploadFileParamsDto();
         String contentType = filedata.getContentType();
         uploadFileParamsDto.setContentType(contentType);
