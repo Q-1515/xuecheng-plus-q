@@ -99,4 +99,13 @@ public interface MediaFileService {
   * @date 2024/3/27 19:28
  */
  public RestResponse mergechunks(Long companyId, String fileMd5, int chunkTotal, UploadFileParamsDto uploadFileParamsDto);
+
+ /***
+  * @description 文件id返回预览url
+  * @param mediaId 文件id
+  * @return RestResponse<String> 预览url
+  * @author Q
+  * @date 2024/3/28 9:22
+  */
+ public RestResponse<String> getPlayUrlByMediaId(String mediaId);
 }

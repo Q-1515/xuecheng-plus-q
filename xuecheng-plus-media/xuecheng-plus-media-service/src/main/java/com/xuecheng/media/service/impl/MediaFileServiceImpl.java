@@ -365,6 +365,25 @@ public class MediaFileServiceImpl implements MediaFileService {
     }
 
     /***
+     * @description 文件id返回预览url
+     * @param mediaId 文件id
+     * @return RestResponse<String> 预览url
+     * @author Q
+     * @date 2024/3/28 9:22
+    */
+    @Override
+    public RestResponse<String> getPlayUrlByMediaId(String mediaId) {
+        MediaFiles mediaFiles = mediaFilesMapper.selectById(mediaId);
+        if (mediaFiles == null){
+            XueChengPlusException.cast("文件不存在");
+        }
+        if (StringUtils.isEmpty(mediaFiles.getUrl())){
+            XueChengPlusException.cast("文件待处理，请稍后查看");
+        }
+        return RestResponse.success(mediaFiles.getUrl());
+    }
+
+    /***
      * @description Minio判断文件是否存在
      * @param bucket 桶
      * @param objectName 文件路径+名称
