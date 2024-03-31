@@ -9,10 +9,12 @@ import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.base.model.RestResponse;
 import com.xuecheng.media.mapper.MediaFilesMapper;
+import com.xuecheng.media.mapper.MediaProcessMapper;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
+import com.xuecheng.media.model.po.MediaProcess;
 import com.xuecheng.media.service.MediaFileService;
 import io.minio.*;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +53,9 @@ public class MediaFileServiceImpl implements MediaFileService {
 
     @Autowired
     private MediaFileService mediaFileService;
+
+    @Autowired
+    private MediaProcessMapper mediaProcessMapper;
 
     @Value("${minio.bucket.files}")
     private String bucket_files;
@@ -215,6 +220,15 @@ public class MediaFileServiceImpl implements MediaFileService {
             mediaFiles.setAuditStatus("002003");
             //插入文件表
             mediaFilesMapper.insert(mediaFiles);
+
+            //将需要转码的视频减添加任务
+            if (contentType.contains("video/x-msvideo")) {
+                MediaProcess mediaProcess = new MediaProcess();
+                BeanUtils.copyProperties(mediaFiles,mediaProcess);
+                //设置状态
+                mediaProcess.setStatus("1");
+                mediaProcessMapper.insert(mediaProcess);
+            }
         }
         return mediaFiles;
     }
@@ -370,14 +384,14 @@ public class MediaFileServiceImpl implements MediaFileService {
      * @return RestResponse<String> 预览url
      * @author Q
      * @date 2024/3/28 9:22
-    */
+     */
     @Override
     public RestResponse<String> getPlayUrlByMediaId(String mediaId) {
         MediaFiles mediaFiles = mediaFilesMapper.selectById(mediaId);
-        if (mediaFiles == null){
+        if (mediaFiles == null) {
             XueChengPlusException.cast("文件不存在");
         }
-        if (StringUtils.isEmpty(mediaFiles.getUrl())){
+        if (StringUtils.isEmpty(mediaFiles.getUrl())) {
             XueChengPlusException.cast("文件待处理，请稍后查看");
         }
         return RestResponse.success(mediaFiles.getUrl());
