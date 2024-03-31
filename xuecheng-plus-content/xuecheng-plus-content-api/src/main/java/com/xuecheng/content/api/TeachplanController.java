@@ -1,5 +1,6 @@
 package com.xuecheng.content.api;
 
+import com.xuecheng.content.model.dto.BindTeachplanMediaDto;
 import com.xuecheng.content.model.dto.SaveTeachplanDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
 import com.xuecheng.content.service.TeachplanService;
@@ -7,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,13 +46,25 @@ public class TeachplanController {
 
     @ApiOperation(value = "删除课程计划")
     @DeleteMapping("/teachplan/{teachPlanId}")
-    public void removeTeachPlan(@PathVariable Long teachPlanId){
+    public void removeTeachPlan(@PathVariable Long teachPlanId) {
         teachplanService.removeTeachPlan(teachPlanId);
     }
 
     @ApiOperation("移动课程计划")
     @PostMapping("/teachplan/{moveType}/{teachPlanId}")
-    public void moveTeachPlan(@PathVariable String moveType,@PathVariable Long teachPlanId) {
-        teachplanService.moveTeachPlan(moveType,teachPlanId);
+    public void moveTeachPlan(@PathVariable String moveType, @PathVariable Long teachPlanId) {
+        teachplanService.moveTeachPlan(moveType, teachPlanId);
+    }
+
+    @ApiOperation(value = "课程计划和媒资信息绑定")
+    @PostMapping("/teachplan/association/media")
+    public void associationMedia(@RequestBody @Validated BindTeachplanMediaDto bindTeachplanMediaDto) {
+        teachplanService.associationMedia(bindTeachplanMediaDto);
+    }
+
+    @ApiOperation(value = "删除课程计划和媒资信息绑定")
+    @DeleteMapping("/teachplan/association/media/{teachPlanId}/{mediaId}")
+    public void deleteAssociationMedia(@PathVariable Long teachPlanId,@PathVariable String mediaId) {
+        teachplanService.deleteAssociationMedia(teachPlanId,mediaId);
     }
 }

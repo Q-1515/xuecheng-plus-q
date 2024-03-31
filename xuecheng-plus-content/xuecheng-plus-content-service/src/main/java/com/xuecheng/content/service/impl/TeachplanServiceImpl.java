@@ -5,6 +5,7 @@ import com.xuecheng.base.execption.XueChengPlusException;
 import com.xuecheng.content.mapper.CourseBaseMapper;
 import com.xuecheng.content.mapper.TeachplanMapper;
 import com.xuecheng.content.mapper.TeachplanMediaMapper;
+import com.xuecheng.content.model.dto.BindTeachplanMediaDto;
 import com.xuecheng.content.model.dto.SaveTeachplanDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
 import com.xuecheng.content.model.po.CourseBase;
@@ -41,6 +42,7 @@ public class TeachplanServiceImpl implements TeachplanService {
 
     @Autowired
     private TeachplanMediaMapper teachplanMediaMapper;
+
 
     @Override
     public List<TeachplanDto> findTeachplayTree(Long courseId) {
@@ -198,12 +200,68 @@ public class TeachplanServiceImpl implements TeachplanService {
         log.debug("课程计划交换位置，原:{},移:{}", teachplan.getId(), exchange.getId());
     }
 
+    /***
+     * @description 教学计划绑定媒资
+     * @param bindTeachplanMediaDto 基本喜喜
+     * @return TeachplanMedia 教学计划绑定媒资表
+     * @author Q
+     * @date 2024/3/31 15:19
+     */
+    @Transactional
+    @Override
+    public TeachplanMedia associationMedia(BindTeachplanMediaDto bindTeachplanMediaDto) {
+        Long teachplanId = bindTeachplanMediaDto.getTeachplanId();
+        Teachplan teachplan = teachplanMapper.selectById(teachplanId);
+        //教学计划不存在
+        if (teachplan == null){
+            XueChengPlusException.cast("教学计划不存在");
+        }
+        //是否是二级目录
+        if (teachplan.getGrade() != 2){
+            XueChengPlusException.cast("只有二级目录才可以绑定媒资文件");
+        }
+
+        //删除原来的绑定信息
+        teachplanMediaMapper.delete(new LambdaQueryWrapper<TeachplanMedia>().eq(TeachplanMedia::getTeachplanId, teachplan.getId()));
+        TeachplanMedia teachplanMedia = new TeachplanMedia();
+        teachplanMedia.setTeachplanId(teachplanId);
+        teachplanMedia.setMediaFilename(bindTeachplanMediaDto.getFileName());
+        teachplanMedia.setMediaId(bindTeachplanMediaDto.getMediaId());
+        teachplanMedia.setCreateDate(LocalDateTime.now());
+        teachplanMedia.setCourseId(teachplan.getCourseId());
+        teachplanMediaMapper.insert(teachplanMedia);
+        return teachplanMedia;
+    }
+
+    /***
+     * @description 删除课程计划和媒资信息绑定
+     * @param teachPlanId  课程计划id
+     * @param mediaId 媒资文件id
+     * @author Q
+     * @date 2024/3/31 15:52
+     */
+    @Override
+    public void deleteAssociationMedia(Long teachPlanId, String mediaId) {
+        Teachplan teachplan = teachplanMapper.selectById(teachPlanId);
+        //教学计划不存在
+        if (teachplan == null){
+            XueChengPlusException.cast("教学计划不存在");
+        }
+        //是否是二级目录
+        if (teachplan.getGrade() != 2){
+            XueChengPlusException.cast("只有二级目录才可以绑定媒资文件");
+        }
+
+        //删除绑定信息
+        teachplanMediaMapper.delete(new LambdaQueryWrapper<TeachplanMedia>().eq(TeachplanMedia::getTeachplanId, teachplan.getId()));
+    }
+
     /**
      * 查询同级课程计划的数量
      *
      * @param courseId 课程id
      * @param parentid 父类id
-     * @return
+     * @return 同级课程计划的数量
      */
     public int getTeachplanCount(Long courseId, Long parentid) {
         LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
@@ -224,7 +282,7 @@ public class TeachplanServiceImpl implements TeachplanService {
         queryWrapper.eq(Teachplan::getParentid, parentid);
         queryWrapper.gt(Teachplan::getOrderby, orderBy);
         List<Teachplan> teachplans = teachplanMapper.selectList(queryWrapper);
-        if (teachplans != null && teachplans.size() > 0) {
+        if (teachplans != null && !teachplans.isEmpty()) {
             for (Teachplan teachplan : teachplans) {
                 Integer orderby = teachplan.getOrderby();
                 teachplan.setOrderby(orderby - 1);
