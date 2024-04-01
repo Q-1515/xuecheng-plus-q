@@ -46,32 +46,7 @@ public class TeachplanServiceImpl implements TeachplanService {
 
     @Override
     public List<TeachplanDto> findTeachplayTree(Long courseId) {
-        List<TeachplanDto> teachplanDtos = teachplanMapper.selectTreeNodes(courseId);
-
-        List<TeachplanDto> teachplanDtoResult = new ArrayList<>();
-        HashMap<Long, TeachplanDto> teachplanDtoHashMap = new HashMap<>();
-
-        teachplanDtos.forEach(teachplanDto -> {
-            teachplanDtoHashMap.put(teachplanDto.getId(), teachplanDto);
-            //获取一级目录
-            if (teachplanDto.getParentid() == 0) {
-                teachplanDtoResult.add(teachplanDto);
-            }
-            //将子目录添加到父目录集合里面去
-
-            Long parentid = teachplanDto.getParentid();
-            TeachplanDto planTeachplanDto = teachplanDtoHashMap.get(parentid);
-            //上级存在
-            if (planTeachplanDto != null) {
-                //自动创建为null的子节点集合
-                List<TeachplanDto> teachplanNodes = planTeachplanDto.getTeachPlanTreeNodes();
-                if (teachplanNodes == null) {
-                    planTeachplanDto.setTeachPlanTreeNodes(new ArrayList<>());
-                }
-                planTeachplanDto.getTeachPlanTreeNodes().add(teachplanDto);
-            }
-        });
-        return teachplanDtoResult;
+        return teachplanMapper.selectTreeNodes(courseId);
     }
 
     /**
