@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @EnableScheduling
 @EnableSwagger2Doc
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.xuecheng.base","com.xuecheng.system"})
 public class SystemApplication {
 
     public static void main(String[] args) {
