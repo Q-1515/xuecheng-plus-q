@@ -122,7 +122,7 @@ public class MediaFileServiceImpl implements MediaFileService {
         }
         //上传到minio
         objectName = folder + objectName;
-        uploadMinio(bytes, bucket_files, objectName, uploadFileParamsDto.getContentType());
+        uploadMinio(bytes, bucket_files, objectName);
 
         //数据库保存文件信息
         MediaFiles mediaFiles = mediaFileService.saveMediaDb(companyId, fileMd5, uploadFileParamsDto, bucket_files, objectName);
@@ -140,12 +140,10 @@ public class MediaFileServiceImpl implements MediaFileService {
      * @param bucket     桶
      * @param objectName 上传的文件路径
      */
-    public void uploadMinio(byte[] bytes, String bucket, String objectName, String Type) {
+    public void uploadMinio(byte[] bytes, String bucket, String objectName) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 
-        if (StringUtils.isEmpty(Type)) {
-            Type = getContentType(objectName);
-        }
+        String Type = getContentType(objectName);
         PutObjectArgs putObjectArgs = PutObjectArgs.builder()
                 .bucket(bucket)
                 .object(objectName)
@@ -283,7 +281,7 @@ public class MediaFileServiceImpl implements MediaFileService {
         String chunkFileFolderPath = getChunkFileFolderPath(fileMd5);
         String filePath = chunkFileFolderPath + chunk;
         try {
-            uploadMinio(bytes, videofiles, filePath, null);
+            uploadMinio(bytes, videofiles, filePath);
         } catch (Exception e) {
             log.error("上传分块文件失败:{}", e.getMessage());
             return RestResponse.validfail(false, "上传分块文件失败");
