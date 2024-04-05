@@ -52,6 +52,6 @@ public class CourseBaseInfoController {
     @ApiOperation("修改课程基础信息")
     @PutMapping("/course")
     public CourseBaseInfoDto modifyCourseBase(@RequestBody @Validated EditCourseDto editCourseDto) {
-        return courseBaseInfoService.updateCourseBase(123L,editCourseDto);
+        return courseBaseInfoService.updateCourseBase(123L, editCourseDto);
     }
 }
