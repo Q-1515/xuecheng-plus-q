@@ -37,8 +37,7 @@ public class UserServiceImpl implements UserDetailsService {
     @Autowired
     private ApplicationContext applicationContext;
 
-    @Autowired
-    private CheckCodeClient checkCodeClient;
+
 
     /***
      * @description 用户登录校验
@@ -60,22 +59,9 @@ public class UserServiceImpl implements UserDetailsService {
         }
 
         String authType = authParamsDto.getAuthType();
-        String checkcode = authParamsDto.getCheckcode();
-        String checkcodekey = authParamsDto.getCheckcodekey();
         if (StringUtils.isBlank(authType)) {
             log.info("认证请求不符合项目要求:{}", s);
             throw new RuntimeException("认证请求数据格式不对");
-        }
-
-        if (StringUtils.isBlank(checkcode) || StringUtils.isBlank(checkcodekey)){
-            log.info("验证码为空:{}", s);
-            throw new RuntimeException("验证码为空");
-        }
-        //校验验证码
-        Boolean verify = checkCodeClient.verify(checkcodekey, checkcode);
-        if (verify == null ||!verify){
-            log.info("验证码错误:{}", s);
-            throw new RuntimeException("验证码错误");
         }
 
         AuthService authService =  applicationContext.getBean(authType + "_authService", AuthService.class);
