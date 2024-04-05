@@ -2,6 +2,7 @@ package com.xuecheng.ucenter.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.xuecheng.ucenter.feignclient.CheckCodeClient;
 import com.xuecheng.ucenter.mapper.XcUserMapper;
 import com.xuecheng.ucenter.model.dto.AuthParamsDto;
 import com.xuecheng.ucenter.model.dto.XcUserExt;
@@ -9,6 +10,7 @@ import com.xuecheng.ucenter.model.po.XcUser;
 import com.xuecheng.ucenter.service.AuthService;
 import javafx.application.Application;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.ParameterResolutionDelegate;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
@@ -35,6 +37,9 @@ public class UserServiceImpl implements UserDetailsService {
     @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
+    private CheckCodeClient checkCodeClient;
+
     /***
      * @description 用户登录校验
      * @param s 用户认证信息json（username | wxcode | ，，，，type类型）
@@ -55,10 +60,24 @@ public class UserServiceImpl implements UserDetailsService {
         }
 
         String authType = authParamsDto.getAuthType();
-        if (authType.isEmpty()) {
+        String checkcode = authParamsDto.getCheckcode();
+        String checkcodekey = authParamsDto.getCheckcodekey();
+        if (StringUtils.isBlank(authType)) {
             log.info("认证请求不符合项目要求:{}", s);
             throw new RuntimeException("认证请求数据格式不对");
         }
+
+        if (StringUtils.isBlank(checkcode) || StringUtils.isBlank(checkcodekey)){
+            log.info("验证码为空:{}", s);
+            throw new RuntimeException("验证码为空");
+        }
+        //校验验证码
+        Boolean verify = checkCodeClient.verify(checkcodekey, checkcode);
+        if (verify == null ||!verify){
+            log.info("验证码错误:{}", s);
+            throw new RuntimeException("验证码错误");
+        }
+
         AuthService authService =  applicationContext.getBean(authType + "_authService", AuthService.class);
         XcUserExt execute = authService.execute(authParamsDto);
         return getUserPrincipal(execute);
