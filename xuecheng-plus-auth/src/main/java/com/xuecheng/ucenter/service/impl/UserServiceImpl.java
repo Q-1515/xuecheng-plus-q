@@ -1,21 +1,14 @@
 package com.xuecheng.ucenter.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.xuecheng.ucenter.feignclient.CheckCodeClient;
 import com.xuecheng.ucenter.mapper.XcMenuMapper;
-import com.xuecheng.ucenter.mapper.XcUserMapper;
 import com.xuecheng.ucenter.model.dto.AuthParamsDto;
 import com.xuecheng.ucenter.model.dto.XcUserExt;
 import com.xuecheng.ucenter.model.po.XcMenu;
-import com.xuecheng.ucenter.model.po.XcUser;
 import com.xuecheng.ucenter.service.AuthService;
-import javafx.application.Application;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.ParameterResolutionDelegate;
-import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

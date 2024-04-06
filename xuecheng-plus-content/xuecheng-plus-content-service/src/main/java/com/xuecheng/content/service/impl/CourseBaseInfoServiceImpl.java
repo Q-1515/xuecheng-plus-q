@@ -177,7 +177,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         BeanUtils.copyProperties(dto, courseMarket);
 
         int b = courseMarketService.saveCourseMarket(courseMarket);
-        if (i <= 0 || i<=0) {
+        if (i <= 0 || b<=0) {
             XueChengPlusException.cast("更新课程表失败");
         }
         return this.getCourseBase(courseBase.getId());
