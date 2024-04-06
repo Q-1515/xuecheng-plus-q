@@ -365,4 +365,26 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         //远程调用搜索服务api添加课程信息到索引
         return searchServiceClient.add(courseIndex);
     }
+
+
+    /***
+     * @description 查询课程发布信息
+     * @param courseId 课程id
+     * @return CoursePublish 课程信息
+     * @author Q
+     * @date 2024/4/6 14:59
+     */
+    @Override
+    public CoursePublish getCoursePublish(Long courseId) {
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+        if (coursePublish == null) {
+            return null;
+        }
+        //课程发布状态
+        String status = coursePublish.getStatus();
+        if (!status.equals("203002")) {
+            return null;
+        }
+        return coursePublish;
+    }
 }

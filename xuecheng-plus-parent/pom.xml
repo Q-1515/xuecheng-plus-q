@@ -18,6 +18,7 @@
         <module>../xuecheng-plus-search</module>
         <module>../xuecheng-plus-auth</module>
         <module>../xuecheng-plus-checkcode</module>
+        <module>../xuecheng-plus-learning</module>
     </modules>
 
     <!-- 继承Spring boot工程 -->
