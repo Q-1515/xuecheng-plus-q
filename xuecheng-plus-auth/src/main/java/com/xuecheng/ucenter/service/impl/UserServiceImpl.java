@@ -3,9 +3,11 @@ package com.xuecheng.ucenter.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.xuecheng.ucenter.feignclient.CheckCodeClient;
+import com.xuecheng.ucenter.mapper.XcMenuMapper;
 import com.xuecheng.ucenter.mapper.XcUserMapper;
 import com.xuecheng.ucenter.model.dto.AuthParamsDto;
 import com.xuecheng.ucenter.model.dto.XcUserExt;
+import com.xuecheng.ucenter.model.po.XcMenu;
 import com.xuecheng.ucenter.model.po.XcUser;
 import com.xuecheng.ucenter.service.AuthService;
 import javafx.application.Application;
@@ -20,6 +22,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * packageName com.xuecheng.ucenter.service.impl
@@ -37,6 +42,8 @@ public class UserServiceImpl implements UserDetailsService {
     @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
+    private XcMenuMapper xcMenuMapper;
 
 
     /***
@@ -64,7 +71,7 @@ public class UserServiceImpl implements UserDetailsService {
             throw new RuntimeException("认证请求数据格式不对");
         }
 
-        AuthService authService =  applicationContext.getBean(authType + "_authService", AuthService.class);
+        AuthService authService = applicationContext.getBean(authType + "_authService", AuthService.class);
         XcUserExt execute = authService.execute(authParamsDto);
         return getUserPrincipal(execute);
     }
@@ -76,11 +83,18 @@ public class UserServiceImpl implements UserDetailsService {
      * @return UserDetails
      * @author Q
      * @date 2024/4/5 17:29
-    */
-    public UserDetails getUserPrincipal(XcUserExt user){
+     */
+    public UserDetails getUserPrincipal(XcUserExt user) {
         //用户权限,如果不加报Cannot pass a null GrantedAuthority collection
-        String[] authorities = {"p1"};
-        String password = user.getPassword();
+        List<XcMenu> xcMenus = xcMenuMapper.selectPermissionByUserId(user.getId());
+        ArrayList<String> authoritieList = new ArrayList<>();
+        String[] authorities = {"test"};
+        xcMenus.forEach(xcMenu -> {
+            authoritieList.add(xcMenu.getCode());
+        });
+        if (!authoritieList.isEmpty()) {
+            authorities = authoritieList.toArray(new String[0]);
+        }
         //为了安全在令牌中不放密码
         user.setPassword(null);
         //将user对象转json
@@ -88,7 +102,4 @@ public class UserServiceImpl implements UserDetailsService {
         //创建UserDetails对象
         return User.withUsername(userString).password("").authorities(authorities).build();
     }
-
-
-
 }

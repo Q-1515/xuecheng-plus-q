@@ -59,6 +59,7 @@ public class CourseBaseInfoServiceImpl implements CourseBaseInfoService {
         courseBaseLambdaQueryWrapper.eq(StringUtils.isNotEmpty(queryCourseParamsDto.getAuditStatus()), CourseBase::getAuditStatus, queryCourseParamsDto.getAuditStatus());
         //发布状态条件
         courseBaseLambdaQueryWrapper.eq(StringUtils.isNotEmpty(queryCourseParamsDto.getPublishStatus()), CourseBase::getStatus, queryCourseParamsDto.getPublishStatus());
+        courseBaseLambdaQueryWrapper.eq(CourseBase::getCompanyId,queryCourseParamsDto.getCompanyId());
 
         //设置分页参数
         Page<CourseBase> page = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());

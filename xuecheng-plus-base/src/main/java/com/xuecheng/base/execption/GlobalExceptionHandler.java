@@ -59,6 +59,9 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public RestErrorResponse doException(Exception e) {
         log.error("捕获异常信息{}", e.getMessage());
+        if(e.getMessage().equals("不允许访问")){
+            return new RestErrorResponse("没有操作此功能的权限");
+        }
         return new RestErrorResponse(CommonError.UNKOWN_ERROR.getErrMessage());
     }
 
